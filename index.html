@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 2 - JavaScript</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #000; padding: 10px; text-align: center; }
+        thead { background-color: #007bff; color: white; }
+        tfoot { background-color: #f2f2f2; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>Data Pegawai</h2>
+    
+    <table>
+        <!-- Judul Kolom -->
+        <thead>
+            <tr>
+                <th>Nama Pegawai</th>
+                <th>Umur</th>
+                <th>Jabatan</th>
+                <th>Status</th>
+                <th>Gaji Pokok</th>
+                <th>Tunjangan Jabatan</th>
+                <th>BPJS (Potongan)</th>
+                <th>Tunjangan Keluarga</th>
+            </tr>
+        </thead>
+        
+        <!-- Isi data-data pake JS -->
+        <tbody id="data-pegawai">
+        </tbody>
+        
+        <!-- Total Gaji pake JS -->
+        <tfoot id="total-gaji">
+        </tfoot>
+    </table>
+
+    <script>
+        // 1. Inisialisasi Variabel Data Pegawai
+        let nama = "Dodi Prayodi";
+        let umur = 25;
+        let jabatan = "Manajer";
+        let status = "Menikah";
+
+        // 2. Gaji Pokok (Pakai Struktur IF)
+        let gapok = 0;
+        let jabatanLower = jabatan.toLowerCase();
+        
+        if (jabatanLower === "manajer") {
+            gapok = 15000000;
+        } else if (jabatanLower === "asisten manajer") {
+            gapok = 10000000;
+        } else if (jabatanLower === "staff") {
+            gapok = 5000000;
+        }
+
+        // 3. Hitung Tunjangan Jabatan (15% dari gapok)
+        let tunjanganJabatan = 0.15 * gapok;
+
+        // 4. Hitung BPJS (10% dari gapok)
+        let bpjs = 0.10 * gapok;
+
+        // 5. Hitung Tunjangan Keluarga (Pakai TERNARY)
+        let tunjanganKeluarga = (status.toLowerCase() === "menikah") ? (0.20 * gapok) : 0;
+
+        // 6. Hitung Total Gaji (Pendapatan - Potongan)
+        let totalGaji = gapok + tunjanganJabatan + tunjanganKeluarga - bpjs;
+
+        // Fungsi opsional untuk memformat angka jadi format Rupiah
+        const formatRupiah = (angka) => {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(angka);
+        };
+
+        // 7. Inputt data ke dalam <tbody>
+        let tbody = document.getElementById("data-pegawai");
+        tbody.innerHTML = `
+            <tr>
+                <td>${nama}</td>
+                <td>${umur} Tahun</td>
+                <td>${jabatan}</td>
+                <td>${status}</td>
+                <td>${formatRupiah(gapok)}</td>
+                <td>${formatRupiah(tunjanganJabatan)}</td>
+                <td>${formatRupiah(bpjs)}</td>
+                <td>${formatRupiah(tunjanganKeluarga)}</td>
+            </tr>
+        `;
+
+        // 8. input total gaji ke dalam <tfoot>
+        let tfoot = document.getElementById("total-gaji");
+        tfoot.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align: right;">Total Gaji:</td>
+                <td>${formatRupiah(totalGaji)}</td>
+            </tr>
+        `;
+    </script>
+
+</body>
+</html>
